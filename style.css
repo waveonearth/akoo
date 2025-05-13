@@ -362,6 +362,11 @@ body.dark .sidebar {
     color: #000;
 }
 
+body.dark .post-list td.title a {
+    text-decoration: none;
+    color: #fff;
+}
+
 .post-list th:nth-child(2),
 .post-list td.category {
     text-align: center;
@@ -374,6 +379,11 @@ body.dark .sidebar {
 
 .post-list tr:hover {
     background-color: #ededed;
+    cursor: pointer;
+}
+
+body.dark .post-list tr:hover {
+    background-color: #828282;
     cursor: pointer;
 }
 
@@ -721,6 +731,11 @@ body.dark #post-body a {
 .comment-text a {
     text-decoration: none;
     color: #1d3466;
+}
+
+body.dark .comment-text a {
+    text-decoration: none;
+    color: #fff;
 }
 
 .comment-reference {
