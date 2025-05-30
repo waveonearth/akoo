@@ -60,11 +60,24 @@
                     <ul class="submenu">
                     <li><a href="#">여자아이들</a></li>
                     <li><a href="#">오마이걸</a></li>
+                    <li><a href="#">EXO</a></li>
+                    <li><a href="#">방탄소년단</a></li>
+                    <li><a href="#">러블리즈</a></li>
+                    <li><a href="#">I.O.I</a></li>
+                    <li><a href="#">인피니트</a></li>
+                    <li><a href="#">에이핑크</a></li>
+                    <li><a href="#">트와이스</a></li>
+                    <li><a href="#">2PM</a></li>
+                    <li><a href="#">샤이니</a></li>
+                    <li><a href="#">JYJ</a></li>
+                    <li><a href="#">소녀시대</a></li>
+                    <li><a href="#">동방신기</a></li>
+                    <li><a href="#">에이프릴</a></li>
                     </ul>
                 </li>
             </ul>
         </aside>
-
+        
         <main class="main">
             <table class="post-list">
             <thead>
@@ -75,65 +88,65 @@
                     <th>조회</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
+            <tbody class="post-tbody">
+                <tr class="dummy">
                     <td class="category"><span>스퀘어</span></td>
                     <td class="title">교육과정개편 된다는 썰</a><span class="comment-count">[10]</span></td>
-                    <td class="post-time">13:03</td>
+                    <td class="post-time">12/26</td>
                     <td class="post-view">762</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>일상토크</span></td>
                     <td class="title">학교에서 개웃긴 일 있었음</a><span class="comment-count">[0]</span></td>
-                    <td class="post-time">13:02</td>
+                    <td class="post-time">12/23</td>
                     <td class="post-view">10</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>케이팝</span></td>
                     <td class="title">콘서트 티켓 가격 에바임</a><span class="comment-count">[4]</span></td>
-                    <td class="post-time">13:02</td>
+                    <td class="post-time">12/20</td>
                     <td class="post-view">79</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>일상토크</span></td>
                     <td class="title">나만 트위터 안 되냐</a><span class="comment-count">[2]</span></td>
-                    <td class="post-time">13:01</td>
+                    <td class="post-time">12/17</td>
                     <td class="post-view">17</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>일상토크</span></td>
                     <td class="title">아까 개웃긴 아저씨 봄</a><span class="comment-count">[3]</span></td>
-                    <td class="post-time">13:01</td>
+                    <td class="post-time">12/16</td>
                     <td class="post-view">37</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>BL</span></td>
                     <td class="title">요즘 재밋는 거 뭐 있냐</a><span class="comment-count">[1]</span></td>
-                    <td class="post-time">13:01</td>
+                    <td class="post-time">12/10</td>
                     <td class="post-view">33</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>헌터토크</span></td>
                     <td class="title"><a href="./huntertalk:29601.html">너네 이 기사 봤냐ㄷㄷㄷ</a><span class="comment-count">[4]</span></td>
-                    <td class="post-time">13:00</td>
+                    <td class="post-time">12/8</td>
                     <td class="post-view">78</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>케이팝</span></td>
                     <td class="title">요즘 아이돌 노래 별로인듯 2세대 아이돌 노래 같은 거 안 나오냐<span class="comment-count">[4]</span></td>
-                    <td class="post-time">13:00</td>
+                    <td class="post-time">12/8</td>
                     <td class="post-view">192</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>헌터토크</span></td>
                     <td class="title">헌터 되면 먹고 살 걱정 없겠다 <span class="comment-count">[27]</span></td>
-                    <td class="post-time">13:00</td>
+                    <td class="post-time">12/6</td>
                     <td class="post-view">244</td>
                 </tr>
-                <tr>
+                <tr class="dummy">
                     <td class="category"><span>스퀘어</span></td>
                     <td class="title">트위터에서 난리난 유튜버.twt <span class="comment-count">[97]</span></td>
-                    <td class="post-time">12:59</td>
+                    <td class="post-time">12/5</td>
                     <td class="post-view">12763</td>
                 </tr>
             </tbody>
@@ -155,102 +168,9 @@
 
     <!-- Scroll Top Button -->
     <button id="scrollTopBtn"><img src="./asset/up-arrow.png" alt=""></button>
-    <script src="script.js"></script>
 
     <!-- script -->
-    <script src="./script.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
-
-        // Firebase 구성 객체
-        const firebaseConfig = {
-        apiKey: "AIzaSyBhwO39QcKN_aiQSNZH8Q6CwbY_PWOA6kE",
-        authDomain: "khunternews-552f4.firebaseapp.com",
-        projectId: "khunternews-552f4",
-        storageBucket: "khunternews-552f4.appspot.com",
-        messagingSenderId: "387777217028",
-        appId: "1:387777217028:web:413e36ecdb8483b95e6b51",
-        measurementId: "G-K5B13765FC"
-        };
-
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore();
-
-        const MASTER_PASSWORD = "1234"; // 마스터 비밀번호
-
-
-        // 댓글 추가 함수
-        window.submitComment = async function() {
-            const nickname = document.getElementById('nickname').value.trim();
-            const content = document.getElementById('comment').value.trim();
-
-            if (!nickname || !content) {
-            alert("닉네임과 댓글 내용을 모두 입력해주세요.");
-            return;
-            }
-
-            const pw = prompt("비밀번호를 입력하세요");
-            if (pw !== "1234") {
-            alert("비밀번호가 틀렸습니다.");
-            return;
-            }
-
-            try {
-            await addDoc(collection(db, "comments"), {
-                nickname,
-                content,
-                createdAt: new Date()
-            });
-
-            document.getElementById("nickname").value = '';
-            document.getElementById("comment").value = '';
-            } catch (e) {
-            console.error("댓글 추가 중 오류 발생:", e);
-            }
-        };
-
-    
-        // 댓글 실시간 불러오기 + 삭제 버튼 렌더링
-        const list = document.getElementById("comment-list");
-
-        onSnapshot(collection(db, "comments"), (snapshot) => {
-        list.innerHTML = '';
-        snapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            const docId = docSnap.id;
-
-            const li = document.createElement("li");
-
-            li.innerHTML = `
-            <strong>${data.nickname}</strong>: ${data.content}
-            <button onclick="deleteComment('${docId}')">🗑️ 삭제</button>
-            `;
-
-            list.appendChild(li);
-        });
-        });
-
-    
-        // 삭제 함수
-        window.deleteComment = async function(docId) {
-        const inputPw = prompt("삭제 비밀번호를 입력하세요");
-        if (inputPw !== MASTER_PASSWORD) {
-            alert("비밀번호가 틀렸습니다.");
-            return;
-        }
-
-        try {
-            await deleteDoc(doc(db, "comments", docId));
-            alert("댓글이 삭제되었습니다.");
-        } catch (e) {
-            console.error("삭제 오류:", e);
-            alert("삭제 실패");
-        }
-        };
-    </script>
+    <script type="module" src="./script.js"></script>
+    <script type="module" src="./script/list.js"></script>
 </body>
 </html>

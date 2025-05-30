@@ -21,6 +21,40 @@ document.querySelectorAll('.toggle-header').forEach(header => {
     });
 });
 
+// pagination 아코디언에 맞춰서
+function repositionPagination() {
+    const main = document.querySelector('.main');
+    const pagination = document.querySelector('.pagination-container');
+
+    if (main && pagination) {
+        const mainBottom = main.getBoundingClientRect().bottom + window.scrollY;
+        pagination.style.top = `${mainBottom}px`;
+    }
+}
+
+function observeMainChanges() {
+    const main = document.querySelector('.main');
+    if (!main) return;
+
+    const observer = new MutationObserver(() => {
+        repositionPagination();
+    });
+
+    observer.observe(main, { childList: true, subtree: true });
+
+    // Fallback: 렌더 완료 후에도 강제로 한 번 더
+    setTimeout(repositionPagination, 500);
+}
+
+// 초기 실행
+window.addEventListener('DOMContentLoaded', () => {
+    repositionPagination();
+    observeMainChanges();
+});
+
+window.addEventListener('resize', repositionPagination);
+window.addEventListener('click', () => setTimeout(repositionPagination, 100));
+
 // 스크롤 탑 버튼
 const scrollTopBtn = document.getElementById('scrollTopBtn');
 window.addEventListener('scroll', () => {

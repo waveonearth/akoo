@@ -147,11 +147,14 @@ body.dark {
     padding: 8px 0;
     font-size: 11px;
     font-weight: 100;
+    align-items: flex-start;
 }
 
 /* 전체 레이아웃 */
 .wrapper {
     display: flex;
+    align-items: flex-start;
+    position: relative;
     max-width: 1200px;
     margin: 30px auto;
     margin-bottom: 0px;
@@ -166,6 +169,7 @@ body.dark {
     border-right: 1px solid #ddd;
     font-size: 12px;
     font-weight: 100;
+    align-self: flex-start;
 }
 
 .sidebar .menu li {
@@ -311,8 +315,17 @@ body.dark .sidebar {
 }
 
 /* 메인 콘텐츠 */
+.main-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     border: solid 1px #ddd;
     border-radius: 20px;
     margin-left: 30px;
@@ -329,7 +342,11 @@ body.dark .sidebar {
 }
 
 .post-list tr:last-child td {
-    border-bottom: none;
+    border-bottom: none !important;
+}
+
+.post-list tr:nth-child(10) td {
+    border-bottom: none !important;
 }
 
 .post-list thead {
@@ -426,12 +443,15 @@ body.dark .post-list td.title {
 
 /* ───── PAGINATION ───── */
 .pagination-container {
+    z-index: 10;
+    left: 0;
+    position: absolute;
     width: 100%;
     max-width: 1200px;
+    padding-top: 20px 0;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     padding-left: 240px;
-    margin-top: 0px;
 }
 
 .pagination {
@@ -447,6 +467,12 @@ body.dark .post-list td.title {
     background: transparent;
     font-size: 12px;
     cursor: pointer;
+}
+
+.pagination span.disabled {
+    color: #999;
+    pointer-events: none;
+    cursor: default;
 }
 
 .prev-btn,
@@ -558,7 +584,10 @@ body.dark #scrollTopBtn img {
 .write-btn img {
     width: 20px;
     height: 20px;
-    padding: 4px;
+    padding-top: 5px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
     opacity: 60%;
 }
 
@@ -595,14 +624,33 @@ body.dark .sub-categories button.active {
     font-weight: 600;
 }
 
-
 /* write */
 .write-container {
-    max-width: 1000px;
+    width: 100%;
     margin: 20px auto;
     padding: 24px;
     background: transparent;
     position: relative;
+}
+
+.write-sub {
+    display: flex;
+    margin: 10px 0 20px;
+}
+
+.write-sub button {
+    background: #f5f5f5;
+    border: none;
+    border-radius: 999px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #555;
+}
+
+.write-sub button.active {
+    background: #1d3466;
+    color: white;
 }
 
 .title-input, .tag-input {
@@ -623,21 +671,50 @@ body.dark .sub-categories button.active {
     margin-bottom: 10px;
 }
 
-.schedule {
-    margin: 20px 0;
+.submit-float-btn {
+    float: right;
+    margin-top: 20ox;
+    background: #eef1f8;
+    color: #1d3466;
+    border: solid #1d3466 1px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    height: 30px;
+    width: 70px;
 }
 
-.submit-float-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #1d3466;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    cursor: pointer;
+/* 태그 input 높이 축소 */
+.tag-input {
+    height: 34px;
     font-size: 14px;
+}
+
+/* 예약 input */
+.schedule {
+    margin: 10px 0;
+    font-family: 'Pretendard-Regular', sans-serif;
+    font-size: 14px;
+}
+
+.schedule input[type="datetime-local"] {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    height: 30px;
+    width: 170px;
+    font-family: 'Pretendard-Regular', sans-serif;
+}
+
+/* CKEditor box styling */
+.ck-editor__editable_inline {
+    width: 100%;
+    min-height: 400px;
+    padding: 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: white;
 }
 
 /* post */
@@ -669,6 +746,45 @@ body.dark .sub-categories button.active {
     color: #7c7c7c;
     margin-bottom: 20px;
     font-weight: 200;
+}
+
+.post-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.post-controls button {
+    padding: 4px 9px;
+    font-size: 12px;
+    background-color: #fff;
+    color: #1d3466;
+    border: solid 1px #1d3466;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.post-controls button:hover {
+    background-color: #eef1f8;
+    color: #1d3466;
+}
+
+body.dark .post-controls button {
+    padding: 4px 9px;
+    font-size: 12px;
+    background-color: transparent;
+    color: #ddd;
+    border: solid 1px #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+body.dark .post-controls button:hover {
+    background-color: #1d3466;
+    color: #fff;
 }
 
 #post-body {
@@ -706,8 +822,26 @@ body.dark #post-body a {
 #refresh-comments {
     border: solid 1px #ddd;
     border-radius: 5px;
+    padding: 5px 7px;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+body.dark #refresh-comments {
+    border: solid 1px #ddd;
+    color: #fff;
+    border-radius: 5px;
     padding: 5px;
     background-color: transparent;
+}
+
+#refresh-comments:hover {
+    cursor: pointer;
+    background-color: #eef1f8;
+}
+
+body.dark #refresh-comments:hover {
+    background-color: #1d3466;
 }
 
 #comments-list {
@@ -753,6 +887,75 @@ body.dark #post-body a {
     color: #1d3466;
 }
 
+.comment-actions span {
+    cursor: pointer;
+    color: #1d3466;
+    margin-left: 10px;
+    font-size: 0.9em;
+    transition: color 0.2s ease;
+}
+
+.comment-actions span:hover {
+    color: #000;
+}
+
+body.dark .comment-actions span {
+    cursor: pointer;
+    color: #ddd;
+    margin-left: 10px;
+    font-size: 0.9em;
+    transition: color 0.2s ease;
+}
+
+body.dark .comment-actions span:hover {
+    color: #fff;
+}
+
+.edit-box {
+    margin-top: 10px;
+    background-color: transparent;
+    font-family: 'Pretendard-Regular', sans-serif;
+}
+
+.edit-box textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    padding: 8px;
+    font-size: 1em;
+    background-color: transparent;
+    font-family: 'Pretendard-Regular', sans-serif;
+    font-size: 13px;
+}
+
+body.dark .edit-box textarea {
+    color: #ddd;
+}
+
+.edit-box button {
+    margin-top: 5px;
+    padding: 5px 9px;
+    background-color: transparent;
+    border: solid 1px #1d3466;
+    border-radius: 4px;
+    color: #1d3466;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+body.dark .edit-box button {
+    border: solid 1px #ddd;
+    color: #ddd;
+}
+
+.edit-box button:hover {
+    background-color: #eef1f8;
+}
+
+body.dark .edit-box button:hover {
+    background-color: #1d3466;
+}
+
 body.dark .comment-text a {
     text-decoration: none;
     color: #fff;
@@ -791,13 +994,46 @@ body.dark .comment-text a {
     border-radius: 5px;
 }
 
+body.dark #comment-input {
+    color: #ddd;
+}
+
 #submit-comment {
+    display: flex;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    padding: 5px 7px;
+    background-color: transparent;
+    justify-content: right;
+    font-size: 12px;
+    color: #1d3466;
+}
+
+#submit-comment:hover {
+    cursor: pointer;
+    background-color: #eef1f8;
+}
+
+body.dark #submit-comment {
     display: flex;
     border: solid 1px #ddd;
     border-radius: 5px;
     padding: 5px;
     background-color: transparent;
     justify-content: right;
+    color: #ddd;
+}
+
+body.dark #submit-comment:hover {
+    background-color: #1d3466;
+}
+
+.comment-meta {
+    color: #1d3466;
+}
+
+body.dark .comment-meta {
+    color: #ddd;
 }
 
 #back-to-category{
@@ -886,7 +1122,6 @@ body.dark .comment-text a {
         gap: 10px;
         font-size: 12px;
     }
-
     .post-list th, .post-list td {
         font-size: 12px;
         padding: 4px 6px;

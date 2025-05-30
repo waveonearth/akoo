@@ -60,6 +60,19 @@
                     <ul class="submenu">
                     <li><a href="#">여자아이들</a></li>
                     <li><a href="#">오마이걸</a></li>
+                    <li><a href="#">EXO</a></li>
+                    <li><a href="#">방탄소년단</a></li>
+                    <li><a href="#">러블리즈</a></li>
+                    <li><a href="#">I.O.I</a></li>
+                    <li><a href="#">인피니트</a></li>
+                    <li><a href="#">에이핑크</a></li>
+                    <li><a href="#">트와이스</a></li>
+                    <li><a href="#">2PM</a></li>
+                    <li><a href="#">샤이니</a></li>
+                    <li><a href="#">JYJ</a></li>
+                    <li><a href="#">소녀시대</a></li>
+                    <li><a href="#">동방신기</a></li>
+                    <li><a href="#">에이프릴</a></li>
                     </ul>
                 </li>
             </ul>
@@ -68,7 +81,7 @@
         <div class="content-area">
             <div class="board-header">
                 <h2>헌터토크</h2>
-                <button class="write-btn" onclick="checkPasswordAndRedirect()">
+                <button class="write-btn" id="writeBtn">
                     <img src="./asset/write.png" alt="글쓰기">
                 </button>
             </div>
@@ -79,7 +92,7 @@
                         <h1 id="post-title">너네 이 기사 봤냐ㄷㄷㄷ</h1>
                         <div id="post-meta">
                             <span id="post-author">익명의 재채기</span> |
-                            <span id="post-date">1분 전</span> |
+                            <span id="post-date">12/8</span> |
                             <span id="post-views">78</span>
                         </div>
                     </div>
@@ -173,59 +186,9 @@
 
     <!-- Scroll Top Button -->
     <button id="scrollTopBtn"><img src="./asset/up-arrow.png" alt=""></button>
-    <script src="script.js"></script>
 
     <!-- script -->
     <script src="./script.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
-
-        // Firebase 구성 객체
-        const firebaseConfig = {
-        apiKey: "AIzaSyBhwO39QcKN_aiQSNZH8Q6CwbY_PWOA6kE",
-        authDomain: "khunternews-552f4.firebaseapp.com",
-        projectId: "khunternews-552f4",
-        storageBucket: "khunternews-552f4.appspot.com",
-        messagingSenderId: "387777217028",
-        appId: "1:387777217028:web:413e36ecdb8483b95e6b51",
-        measurementId: "G-K5B13765FC"
-        };
-
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore();
-
-        const MASTER_PASSWORD = "1234"; // 마스터 비밀번호
-
-        function checkPasswordAndRedirect() {
-            const pw = prompt("비밀번호를 입력하세요");
-            if (pw === MASTER_PASSWORD) {
-                window.location.href = "write.html?board=huntertalk";
-            } else {
-                alert("비밀번호가 틀렸습니다.");
-            }
-            }
-            window.checkPasswordAndRedirect = checkPasswordAndRedirect;
-
-        function filterCategory(category) {
-            const rows = document.querySelectorAll(".post-list tbody tr");
-            rows.forEach(row => {
-            const cell = row.querySelector(".category span");
-            const cat = cell ? cell.textContent.trim() : '';
-            if (category === "전체" || cat === category) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-            });
-
-            document.querySelectorAll('.sub-categories button').forEach(btn => btn.classList.remove('active'));
-            const btn = Array.from(document.querySelectorAll('.sub-categories button')).find(b => b.textContent === category);
-            if (btn) btn.classList.add('active');
-        }
-    </script>
+    <script type="module" src="writebtn.js"></script>
 </body>
 </html>

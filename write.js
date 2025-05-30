@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-storage.js";
 
-// 🔐 Firebase 설정
+// Firebase 설정
 const firebaseConfig = {
     apiKey: "AIzaSyBhwO39QcKN_aiQSNZH8Q6CwbY_PWOA6kE",
     authDomain: "khunternews-552f4.firebaseapp.com",
@@ -11,63 +11,133 @@ const firebaseConfig = {
     messagingSenderId: "387777217028",
     appId: "1:387777217028:web:413e36ecdb8483b95e6b51",
     measurementId: "G-K5B13765FC"
-    };
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// URL에서 category 파라미터 읽기
 const params = new URLSearchParams(window.location.search);
-const category = params.get("category") || "미지정";
-document.getElementById("category-label").textContent += category;
+const boardParam = params.get("board");
+const editId = params.get("edit");
 
-// CKEditor 초기화
+const categoryMap = {
+    huntertalk: "헌터토크",
+    kpop: "케이팝",
+    kdrama: "한국드라마",
+    square: "스퀘어",
+    daily: "일상토크",
+    bl: "BL",
+    drama: "해외드라마",
+    hot: "HOT",
+    kfamous: "국내유명인",
+    famous: "해외유명인"
+};
+
+let selectedCategory = boardParam || "미지정";
+let selectedSubhead = "잡담";
+
+// category label 초기 세팅
+if (boardParam && categoryMap[boardParam]) {
+    document.getElementById("category-label").textContent += categoryMap[boardParam];
+}
+
+document.querySelectorAll("#subhead-buttons button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        selectedSubhead = btn.dataset.value;
+        document.querySelectorAll("#subhead-buttons button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+    });
+});
+
 let editorInstance;
-
-ClassicEditor
-    .create(document.querySelector('#editor'), {
-        ckfinder: {
-        uploadUrl: '' // 커스터마이징 시 서버 연동 가능
-        }
-    })
+ClassicEditor.create(document.querySelector('#editor'))
     .then(editor => {
         editorInstance = editor;
+        if (editId) loadEditData(editor);
     })
-    .catch(error => {
-        console.error("CKEditor 초기화 실패:", error);
+    .catch(err => console.error(err));
+
+async function loadEditData(editor) {
+    const docRef = doc(db, "posts", editId);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) return alert("글 데이터를 불러올 수 없습니다.");
+    const data = snap.data();
+
+    document.getElementById("title").value = data.title;
+    editor.setData(data.content);
+    selectedSubhead = data.subcategory;
+
+    // 카테고리 라벨 수정
+    if (data.category && categoryMap[data.category]) {
+        selectedCategory = data.category;
+        document.getElementById("category-label").textContent = `${categoryMap[data.category]}`;
+    }
+
+    document.querySelectorAll("#subhead-buttons button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.value === selectedSubhead);
     });
+}
 
-// 등록 버튼 클릭
 window.submitPost = async function () {
-    const title = document.getElementById("title").value.trim();
-    const content = editorInstance.getData();
-    const subhead = document.querySelector('input[name="subhead"]:checked').value;
-    const tags = document.getElementById("tags").value.split(',').map(tag => tag.trim()).filter(Boolean);
-    const schedule = document.getElementById("scheduleTime").value;
-    const scheduledDate = schedule ? new Date(schedule) : null;
-
-    if (!title || !content) {
-        alert("제목과 내용을 입력해주세요.");
+    if (!editorInstance) {
+        alert("에디터 로딩 중입니다. 잠시 후 시도해주세요.");
         return;
     }
 
-    try {
-        await addDoc(collection(db, "posts"), {
-        title,
-        content,
-        category,
-        subhead,
-        tags,
-        scheduledAt: scheduledDate,
-        createdAt: serverTimestamp(),
-        views: 0
-        });
+    const title = document.getElementById("title").value.trim();
+    const rawContent = editorInstance.getData();
+    const textOnly = rawContent.replace(/<[^>]*>/g, "").trim();
+    const subcategory = selectedSubhead;
 
-        alert("게시글이 등록되었습니다.");
-        window.location.href = "index.html";
+    if (!title || !textOnly || !subcategory) {
+        alert("제목, 내용, 말머리를 입력해주세요.");
+        return;
+    }
+
+    // 예약 발행 값 처리
+    const scheduleInput = document.getElementById("scheduleTime")?.value;
+    let scheduledAt = null;
+    let isScheduled = false;
+
+    if (scheduleInput) {
+        scheduledAt = new Date(scheduleInput).getTime();
+        if (scheduledAt > Date.now()) {
+            isScheduled = true;
+        }
+    }
+    
+    try {
+        if (editId) {
+            await updateDoc(doc(db, "posts", editId), {
+                title,
+                content: rawContent,
+                subcategory
+            });
+            alert("수정되었습니다.");
+        } else {
+            const snap = await getDocs(query(collection(db, "posts"), orderBy("postNumber", "desc")));
+            const latestNum = snap.empty ? 169620 : (snap.docs.find(doc => !doc.data().isDummy)?.data().postNumber || 169620);
+            const newPostNumber = latestNum + 1;
+
+            await addDoc(collection(db, "posts"), {
+                title,
+                content: rawContent,
+                subcategory,
+                category: selectedCategory,
+                postNumber: newPostNumber,
+                createdAt: serverTimestamp(),
+                timestamp: isScheduled ? scheduledAt : Date.now(),
+                commentsCount: 0,
+                views: 0,
+                isDummy: false,
+                scheduledAt: isScheduled ? scheduledAt : null
+            });
+            alert("글이 등록되었습니다.");
+        }
+        window.location.href = `${selectedCategory}.html`;
     } catch (err) {
         console.error("업로드 실패:", err);
-        alert("업로드 중 오류가 발생했습니다.");
+        alert("업로드 실패: " + err.message);
     }
 };
