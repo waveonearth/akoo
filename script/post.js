@@ -56,12 +56,20 @@ const categoryMap = {
     famous: "해외유명인"
 };
 
+let postData = null;
+
 async function loadPost() {
     if (!postId) return;
     const docRef = doc(db, "posts", postId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         const data = docSnap.data();
+
+        document.getElementById("post-body").innerHTML = data.content;
+
+        requestAnimationFrame(() => {
+            convertOembed();
+        });
         
         document.getElementById("post-title").textContent = data.title;
         document.getElementById("post-title-head").textContent = data.title;
@@ -76,6 +84,23 @@ async function loadPost() {
     } else {
         alert("글을 찾을 수 없습니다.");
     }
+}
+
+function convertOembed() {
+    document.querySelectorAll("oembed[url]").forEach(el => {
+        const url = el.getAttribute("url");
+        const embedUrl = url.replace("youtu.be/", "www.youtube.com/embed/").split("?")[0];
+
+        const iframe = document.createElement("iframe");
+        iframe.src = embedUrl;
+        iframe.width = "100%";
+        iframe.height = "360";
+        iframe.frameBorder = "0";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+
+        el.replaceWith(iframe);
+    });
 }
 
 document.getElementById("delete-post").addEventListener("click", async () => {
