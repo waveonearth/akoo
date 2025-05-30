@@ -98,28 +98,35 @@ function loadComments() {
 
 function setupCommentEvents() {
     document.getElementById("submit-comment").addEventListener("click", async () => {
-    const text = document.getElementById("comment-input").value.trim();
-    if (!text) return;
+        const text = document.getElementById("comment-input").value.trim();
+        if (!text) return;
 
-    if (window.editingCommentId) {
-        await updateDoc(doc(db, "comments", window.editingCommentId), {
-            text
-        });
-        window.editingCommentId = null;
-    } else {
-        await addDoc(collection(db, "comments"), {
-            postId,
-            text,
-            timestamp: Date.now()
-        });
+        // 등록 전에 비밀번호 요청
+        const pw = prompt("비밀번호를 입력하세요:");
+        if (pw !== MASTER_PASSWORD) {
+            alert("비밀번호가 틀렸습니다.");
+            return;
+        }
 
-        await updateDoc(doc(db, "posts", postId), {
-            commentsCount: increment(1)
-        });
-    }
+        if (window.editingCommentId) {
+            await updateDoc(doc(db, "comments", window.editingCommentId), {
+                text
+            });
+            window.editingCommentId = null;
+        } else {
+            await addDoc(collection(db, "comments"), {
+                postId,
+                text,
+                timestamp: Date.now()
+            });
 
-    document.getElementById("comment-input").value = "";
-});
+            await updateDoc(doc(db, "posts", postId), {
+                commentsCount: increment(1)
+            });
+        }
+
+        document.getElementById("comment-input").value = "";
+    });
 
     document.getElementById("refresh-comments").addEventListener("click", loadComments);
 }
