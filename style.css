@@ -557,6 +557,7 @@ body.dark #scrollTopBtn img {
     flex: 1;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .board-header {
@@ -723,6 +724,7 @@ body.dark .sub-categories button.active {
     margin-left: 30px;
     background: transparent;
     border-radius: 12px;
+    display: block;
 }
 
 .title-data {
@@ -733,6 +735,8 @@ body.dark .sub-categories button.active {
     padding-bottom: 0;
     border: solid 1px #ddd;
     border-radius: 10px;
+    display: block;
+    width: 100%;
 }
 
 .post-content h1 {
@@ -742,10 +746,14 @@ body.dark .sub-categories button.active {
 }
 
 #post-meta {
+    max-width: 100%;
     font-size: 13px;
     color: #7c7c7c;
     margin-bottom: 20px;
     font-weight: 200;
+    display: block;
+    width: 100%;
+    word-break: break-word;
 }
 
 .post-controls {
@@ -1176,5 +1184,25 @@ body.dark .comment-meta {
         gap: 4px;
         margin-bottom: 20px;
         padding: 0;
+    }
+
+    .post-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .title-data {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .post-content {
+        padding: 0;
+    }
+
+    #post-body {
+        margin-left: 0;
     }
 }
