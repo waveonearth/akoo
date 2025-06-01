@@ -298,6 +298,10 @@ body.dark .arrow img {
     color: #999999 !important;
 }
 
+body.dark .submenu li {
+    color: #ddd;
+}
+
 .accordion:hover {
     background: transparent; /* 전체 영역 hover 방지 */
 }
