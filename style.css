@@ -719,7 +719,7 @@ body.dark .sub-categories button.active {
 
 /* post */
 .post-container {
-    max-width: 800px;
+    max-width: 100%;
     margin-left: 30px;
     background: transparent;
     border-radius: 12px;
