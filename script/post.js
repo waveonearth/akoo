@@ -90,7 +90,12 @@ document.getElementById("delete-post").addEventListener("click", async () => {
 });
 
 document.getElementById("edit-post").addEventListener("click", () => {
-    window.location.href = `write.html?edit=${postId}&from=${from}`;
+    const pw = prompt("비밀번호를 입력하세요:");
+    if (pw === MASTER_PASSWORD) {
+        window.location.href = `write.html?edit=${postId}&from=${from}`;
+    } else {
+        alert("비밀번호가 틀렸습니다.");
+    }
 });
 
 loadPost();
