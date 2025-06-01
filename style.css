@@ -298,8 +298,8 @@ body.dark .arrow img {
     color: #999999 !important;
 }
 
-body.dark .submenu li {
-    color: #ddd;
+body.dark .submenu li a {
+    color: #ddd !important;
 }
 
 .accordion:hover {
