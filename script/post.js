@@ -16,7 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const MASTER_PASSWORD = "baekakie";
+//const MASTER_PASSWORD = "baekakie";
 
 const postId = new URLSearchParams(window.location.search).get("id");
 const from = new URLSearchParams(window.location.search).get("from") || "index";
@@ -79,26 +79,34 @@ async function loadPost() {
 }
 
 document.getElementById("delete-post").addEventListener("click", async () => {
-    const pw = prompt("비밀번호를 입력하세요:");
-    if (pw === MASTER_PASSWORD) {
-        await deleteDoc(doc(db, "posts", postId));
-        alert("삭제되었습니다.");
-        window.location.href = `${from}.html`;
-    } else {
-        alert("비밀번호가 틀렸습니다.");
+    const inputUser = prompt("작성자 이름을 입력하세요:");
+    const inputPw = prompt("비밀번호를 입력하세요:");
+
+    const snap = await getDoc(doc(db, "posts", postId));
+    const data = snap.data();
+    if (data.username !== inputUser || data.password !== inputPw) {
+        return alert("작성자 정보가 일치하지 않습니다.");
     }
+
+    await deleteDoc(doc(db, "posts", postId));
+    alert("삭제되었습니다.");
+    window.location.href = `${data.category}.html`;
 });
 
-document.getElementById("edit-post").addEventListener("click", () => {
-    const pw = prompt("비밀번호를 입력하세요:");
-    if (pw === MASTER_PASSWORD) {
-        window.location.href = `write.html?edit=${postId}&from=${from}`;
-    } else {
-        alert("비밀번호가 틀렸습니다.");
+document.getElementById("edit-post").addEventListener("click", async () => {
+    const inputUser = prompt("작성자 이름을 입력하세요:");
+    const inputPw = prompt("비밀번호를 입력하세요:");
+
+    const snap = await getDoc(doc(db, "posts", postId));
+    const data = snap.data();
+    if (data.username !== inputUser || data.password !== inputPw) {
+        return alert("작성자 정보가 일치하지 않습니다.");
     }
+
+    window.location.href = `write.html?edit=${postId}`;
 });
 
 loadPost();
 window.postId = postId;
-window.MASTER_PASSWORD = MASTER_PASSWORD;
+//window.MASTER_PASSWORD = MASTER_PASSWORD;
 window.formatVirtualTime = formatVirtualTime;
